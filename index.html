@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Secure Password Generator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>Apex Password Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #111827;
-      --accent: #6366f1;
-      --accent-2: #22c55e;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
+      --bg: #020617;
+      --card: rgba(15, 23, 42, 0.85);
+      --accent: #00f5ff;
+      --accent2: #7c3aed;
+      --danger: #ff3b3b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
     }
 
     * {
@@ -22,7 +23,7 @@
 
     body {
       margin: 0;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
+      background: radial-gradient(circle at top, #0f172a, #020617);
       color: var(--text);
       display: flex;
       justify-content: center;
@@ -33,16 +34,26 @@
 
     .container {
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       background: var(--card);
-      padding: 25px;
+      padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 40px rgba(0, 245, 255, 0.15);
+      border: 1px solid rgba(0, 245, 255, 0.2);
     }
 
     h1 {
-      margin-bottom: 10px;
-      font-weight: 600;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 26px;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 20px;
     }
 
     .output {
@@ -55,9 +66,9 @@
       flex: 1;
       padding: 12px;
       border-radius: 10px;
-      border: none;
-      background: #1f2937;
-      color: var(--text);
+      border: 1px solid rgba(0,245,255,0.2);
+      background: #020617;
+      color: var(--accent);
       font-size: 16px;
     }
 
@@ -65,14 +76,17 @@
       padding: 12px 15px;
       border: none;
       border-radius: 10px;
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
       color: white;
       cursor: pointer;
       transition: 0.2s;
+      font-weight: 600;
+      box-shadow: 0 0 15px rgba(0,245,255,0.4);
     }
 
     button:hover {
-      background: #4f46e5;
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 0 25px rgba(0,245,255,0.7);
     }
 
     .controls {
@@ -83,10 +97,16 @@
       display: flex;
       justify-content: space-between;
       margin: 10px 0;
+      font-size: 14px;
     }
 
     input[type="range"] {
       width: 100%;
+      accent-color: var(--accent);
+    }
+
+    input[type="checkbox"] {
+      accent-color: var(--accent);
     }
 
     .strength {
@@ -96,19 +116,21 @@
     .bar {
       height: 10px;
       border-radius: 10px;
-      background: #1f2937;
+      background: #020617;
       overflow: hidden;
+      border: 1px solid rgba(0,245,255,0.2);
     }
 
     .fill {
       height: 100%;
       width: 0%;
       transition: 0.3s;
+      box-shadow: 0 0 10px currentColor;
     }
 
     .label {
       margin-top: 5px;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
     }
 
@@ -121,14 +143,15 @@
 </head>
 <body>
   <div class="container">
-    <h1>Password Generator</h1>
+    <h1>APEX GENERATOR</h1>
+    <div class="subtitle">Elite Secure Password System</div>
 
     <div class="output">
       <input id="password" readonly />
       <button onclick="copyPassword()">Copy</button>
     </div>
 
-    <button onclick="generatePassword()" style="width:100%">Generate Password</button>
+    <button onclick="generatePassword()" style="width:100%">Generate</button>
 
     <div class="controls">
       <div class="control">
@@ -154,7 +177,7 @@
       <div class="bar">
         <div class="fill" id="strengthFill"></div>
       </div>
-      <div class="label" id="strengthLabel">Strength: </div>
+      <div class="label" id="strengthLabel">Strength:</div>
     </div>
   </div>
 
@@ -189,7 +212,7 @@
       }
 
       document.getElementById("password").value = password;
-      updateStrength(password, chars);
+      updateStrength(password);
     }
 
     function copyPassword() {
@@ -198,14 +221,14 @@
       document.execCommand("copy");
     }
 
-    function updateStrength(password, chars) {
+    function updateStrength(password) {
       let score = 0;
 
-      if (password.length >= 12) score += 1;
-      if (password.length >= 16) score += 1;
-      if (/[A-Z]/.test(password)) score += 1;
-      if (/[0-9]/.test(password)) score += 1;
-      if (/[^A-Za-z0-9]/.test(password)) score += 1;
+      if (password.length >= 12) score++;
+      if (password.length >= 16) score++;
+      if (/[A-Z]/.test(password)) score++;
+      if (/[0-9]/.test(password)) score++;
+      if (/[^A-Za-z0-9]/.test(password)) score++;
 
       const fill = document.getElementById("strengthFill");
       const label = document.getElementById("strengthLabel");
@@ -214,14 +237,14 @@
       fill.style.width = width + "%";
 
       if (score <= 2) {
-        fill.style.background = "#ef4444";
+        fill.style.background = "var(--danger)";
         label.textContent = "Strength: Weak";
       } else if (score <= 4) {
         fill.style.background = "#f59e0b";
         label.textContent = "Strength: Medium";
       } else {
-        fill.style.background = "#22c55e";
-        label.textContent = "Strength: Strong";
+        fill.style.background = "var(--accent)";
+        label.textContent = "Strength: Apex";
       }
     }
   </script>
