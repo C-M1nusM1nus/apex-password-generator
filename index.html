@@ -16,10 +16,7 @@
       --muted: #94a3b8;
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
     body {
       margin: 0;
@@ -41,109 +38,74 @@
       backdrop-filter: blur(20px);
       box-shadow: 0 0 40px rgba(0, 245, 255, 0.15);
       border: 1px solid rgba(0, 245, 255, 0.2);
+      position: relative;
     }
 
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 26px;
-      margin-bottom: 5px;
-      letter-spacing: 1px;
-    }
+    h1 { font-family: 'Orbitron', sans-serif; font-size: 26px; margin-bottom: 5px; letter-spacing: 1px; }
+    .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
 
-    .subtitle {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
-
-    .output {
-      display: flex;
-      gap: 10px;
-      margin: 20px 0;
-    }
+    .output { display: flex; gap: 10px; margin: 20px 0; }
 
     .output input {
-      flex: 1;
-      padding: 12px;
-      border-radius: 10px;
+      flex: 1; padding: 12px; border-radius: 10px;
       border: 1px solid rgba(0,245,255,0.2);
-      background: #020617;
-      color: var(--accent);
-      font-size: 16px;
+      background: #020617; color: var(--accent); font-size: 16px;
     }
 
     button {
-      padding: 12px 15px;
-      border: none;
-      border-radius: 10px;
+      padding: 12px 15px; border: none; border-radius: 10px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: white;
-      cursor: pointer;
-      transition: 0.2s;
-      font-weight: 600;
-      box-shadow: 0 0 15px rgba(0,245,255,0.4);
+      color: white; cursor: pointer; transition: 0.2s;
+      font-weight: 600; box-shadow: 0 0 15px rgba(0,245,255,0.4);
     }
 
-    button:hover {
-      transform: translateY(-1px) scale(1.02);
-      box-shadow: 0 0 25px rgba(0,245,255,0.7);
-    }
+    button:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 0 25px rgba(0,245,255,0.7); }
 
-    .controls {
-      margin-top: 15px;
-    }
+    .controls { margin-top: 15px; }
+    .control { display: flex; justify-content: space-between; margin: 10px 0; font-size: 14px; }
 
-    .control {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
-      font-size: 14px;
-    }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    input[type="checkbox"] { accent-color: var(--accent); }
 
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--accent);
-    }
-
-    input[type="checkbox"] {
-      accent-color: var(--accent);
-    }
-
-    .strength {
-      margin-top: 20px;
-    }
+    .strength { margin-top: 20px; }
 
     .bar {
-      height: 10px;
+      height: 10px; border-radius: 10px; background: #020617;
+      overflow: hidden; border: 1px solid rgba(0,245,255,0.2);
+    }
+
+    .fill { height: 100%; width: 0%; transition: 0.3s; box-shadow: 0 0 10px currentColor; }
+
+    .label { margin-top: 5px; font-size: 13px; color: var(--muted); }
+
+    /* Toast */
+    .toast {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid rgba(0,245,255,0.3);
+      padding: 10px 15px;
       border-radius: 10px;
-      background: #020617;
-      overflow: hidden;
-      border: 1px solid rgba(0,245,255,0.2);
-    }
-
-    .fill {
-      height: 100%;
-      width: 0%;
-      transition: 0.3s;
-      box-shadow: 0 0 10px currentColor;
-    }
-
-    .label {
-      margin-top: 5px;
+      color: var(--accent);
       font-size: 13px;
-      color: var(--muted);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      pointer-events: none;
     }
 
-    @media (max-width: 500px) {
-      .container {
-        padding: 20px;
-      }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
     }
+
+    @media (max-width: 500px) { .container { padding: 20px; } }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>APEX GENERATOR</h1>
+    <h1>APEX PASSWORD GENERATOR</h1>
     <div class="subtitle">Elite Secure Password System</div>
 
     <div class="output">
@@ -159,26 +121,18 @@
       </div>
       <input type="range" min="6" max="32" value="12" id="length" />
 
-      <div class="control">
-        <label><input type="checkbox" id="lower" checked /> Lowercase</label>
-      </div>
-      <div class="control">
-        <label><input type="checkbox" id="upper" checked /> Uppercase</label>
-      </div>
-      <div class="control">
-        <label><input type="checkbox" id="numbers" checked /> Numbers</label>
-      </div>
-      <div class="control">
-        <label><input type="checkbox" id="symbols" /> Symbols</label>
-      </div>
+      <div class="control"><label><input type="checkbox" id="lower" checked /> Lowercase</label></div>
+      <div class="control"><label><input type="checkbox" id="upper" checked /> Uppercase</label></div>
+      <div class="control"><label><input type="checkbox" id="numbers" checked /> Numbers</label></div>
+      <div class="control"><label><input type="checkbox" id="symbols" /> Symbols</label></div>
     </div>
 
     <div class="strength">
-      <div class="bar">
-        <div class="fill" id="strengthFill"></div>
-      </div>
+      <div class="bar"><div class="fill" id="strengthFill"></div></div>
       <div class="label" id="strengthLabel">Strength:</div>
     </div>
+
+    <div id="toast" class="toast">Copied to clipboard</div>
   </div>
 
   <script>
@@ -216,9 +170,21 @@
     }
 
     function copyPassword() {
-      const input = document.getElementById("password");
-      input.select();
-      document.execCommand("copy");
+      const text = document.getElementById("password").value;
+      if (!text) return;
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast();
+      });
+    }
+
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
     }
 
     function updateStrength(password) {
